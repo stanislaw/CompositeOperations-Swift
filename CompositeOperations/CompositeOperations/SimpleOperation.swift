@@ -58,31 +58,19 @@ class SimpleOperation: NSOperation, Operation {
         }
     }
 
-    final func finishWithResult(result: AnyObject) {
-        let operationResult: OperationResult
-
+    final func finish(result: OperationResult) {
         if cancelled == false {
-            operationResult = .Result(result)
-            state = .Finished(operationResult)
+            state = .Finished(result)
         } else {
-            operationResult = .Cancelled
-            state = .Finished(operationResult)
+            state = .Finished(.Cancelled)
         }
 
         if let completion = completion {
-            completion(operationResult)
-        }
-    }
-
-    final func rejectWithError(error: AnyObject) {
-        if cancelled == false {
-            state = .Finished(.Error(error))
-        } else {
-            state = .Finished(.Cancelled)
+            completion(result)
         }
     }
 
     override func main() {
-        finishWithResult(NSNull())
+        finish(.Result(NSNull()))
     }
 }

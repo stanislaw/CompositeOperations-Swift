@@ -57,12 +57,12 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation: finishWithResult()
+// SimpleOperation: finish(.Result())
 extension SimpleOperationTests {
     func test_finish_with_result_should_finish_operation() {
         let operation: SimpleOperation = SimpleOperation()
 
-        operation.finishWithResult(NSNull())
+        operation.finish(.Result(NSNull()))
 
         XCTAssert(operation.finished)
     }
@@ -70,7 +70,7 @@ extension SimpleOperationTests {
     func test_finish_with_result_should_finish_operation_with_given_result() {
         let operation: SimpleOperation = SimpleOperation()
 
-        operation.finishWithResult(NSNull())
+        operation.finish(.Result(NSNull()))
 
         if let result = operation.result {
             switch result {
@@ -86,12 +86,12 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation: rejectWithError()
+// SimpleOperation: finish(.Error(NSNull()))
 extension SimpleOperationTests {
     func test_reject_with_error_should_finish_operation() {
         let operation: SimpleOperation = SimpleOperation()
 
-        operation.rejectWithError(NSNull())
+        operation.finish(.Error(NSNull()))
 
         XCTAssert(operation.finished)
     }
@@ -99,7 +99,7 @@ extension SimpleOperationTests {
     func test_reject_with_error_should_finish_operation_with_given_error() {
         let operation: SimpleOperation = SimpleOperation()
 
-        operation.rejectWithError(NSNull())
+        operation.finish(.Error(NSNull()))
 
         if let result = operation.result {
             switch result {
@@ -122,7 +122,7 @@ extension SimpleOperationTests {
 
         operation.cancel()
 
-        operation.rejectWithError(NSNull())
+        operation.finish(.Error(NSNull()))
 
         if let result = operation.result {
             switch result {
@@ -151,6 +151,15 @@ extension SimpleOperationTests {
 
         operation.start()
 
-        XCTAssertNotNil(expectedResult)
+        if let result = expectedResult {
+            switch result {
+                case .Result(let result):
+                    XCTAssert(result as! NSObject == NSNull())
+                default:
+                    XCTAssert(false)
+            }
+        } else {
+            XCTAssert(false)
+        }
     }
 }
