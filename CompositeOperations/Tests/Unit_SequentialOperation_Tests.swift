@@ -35,11 +35,11 @@ class Unit_SequentialOperation_NullSequence: XCTestCase {
     }
 }
 
-class Unit_SequentialOperation_Sequence_OneSimpleOperation: XCTestCase {
+class Unit_SequentialOperation_Sequence_OneOperation: XCTestCase {
     var sequentialOperation: SequentialOperation!
 
     override func setUp() {
-        sequentialOperation = SequentialOperation(sequence: TestSequence_OneSimpleOperation())
+        sequentialOperation = SequentialOperation(sequence: TestSequence_OneOperationFinishingWithNull())
     }
 
     func test_should_finish() {
@@ -81,5 +81,56 @@ class Unit_SequentialOperation_Sequence_OneSimpleOperation: XCTestCase {
             default:
                 XCTFail()
         }
+    }
+}
+
+class Unit_SequentialOperation_Sequence_ManyOperations: XCTestCase {
+    var sequentialOperation: SequentialOperation!
+
+    override func setUp() {
+        sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperationsFinishingWithNull())
+    }
+
+    func test_should_finish() {
+        waitForCompletion({ (done) -> Void in
+            self.sequentialOperation.completion = { (result) in
+                done()
+            }
+
+            self.sequentialOperation.start()
+        })
+
+        XCTAssertTrue(sequentialOperation.finished)
+    }
+
+    func test_completion_should_have_array_with_NSNull() {
+        var expectedResult: CompositeOperationResult? = nil
+
+        waitForCompletion({ (done) -> Void in
+            self.sequentialOperation.completion = { (result) in
+                expectedResult = result
+
+                done()
+            }
+
+            self.sequentialOperation.start()
+        })
+
+        switch expectedResult! {
+            case .Results(let results):
+                XCTAssertEqual(results.count, 3)
+
+                for result in results {
+                    switch result {
+                        case .Result(let result):
+                            XCTAssert(result as! NSNull == NSNull())
+                        default:
+                            XCTFail()
+                        }
+                }
+
+            default:
+                XCTFail()
+            }
     }
 }

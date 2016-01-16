@@ -26,12 +26,24 @@ class TestSequence_Null: Sequence {
     }
 }
 
-class TestSequence_OneSimpleOperation: Sequence {
+class TestSequence_OneOperationFinishingWithNull: Sequence {
     func nextOperation(previousOperation: Operation?) -> Operation? {
         if let _ = previousOperation {
             return nil
         }
 
         return TestOperation_FinishesWithNSNull()
+    }
+}
+
+class TestSequence_ThreeOperationsFinishingWithNull: Sequence {
+    var index = 0
+
+    func nextOperation(previousOperation: Operation?) -> Operation? {
+        if index++ < 3 {
+            return TestOperation_FinishesWithNSNull()
+        }
+
+        return nil
     }
 }
