@@ -11,16 +11,28 @@ import Foundation
 enum OperationState {
     case Ready
     case Executing
-    case Finished
+    case Finished(OperationResult)
 }
 
 class SimpleOperation: NSOperation, Operation {
-    var result: OperationResult? = nil
-
     private var state: OperationState = .Ready
 
     final override var finished: Bool {
-        return state == .Finished
+        switch state {
+            case .Finished(_):
+                return true
+            default:
+                return false
+        }
+    }
+
+    final var result: OperationResult? {
+        switch state {
+            case .Finished(let result):
+                return result
+            default:
+                return nil
+        }
     }
 
     final override func start() {
@@ -28,12 +40,10 @@ class SimpleOperation: NSOperation, Operation {
     }
 
     final func finishWithResult(result: AnyObject) {
-        self.result = .Result(result)
-        state = .Finished
+        state = .Finished(.Result(result))
     }
 
     final func rejectWithError(error: AnyObject) {
-        self.result = .Error(error)
-        state = .Finished
+        state = .Finished(.Error(error))
     }
 }
