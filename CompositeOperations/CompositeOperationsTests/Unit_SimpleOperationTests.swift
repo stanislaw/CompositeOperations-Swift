@@ -48,7 +48,16 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation specific behavior: finish with result
+// SimpleOperation: initial state
+extension SimpleOperationTests {
+    func test_completion_should_be_nil() {
+        let operation: SimpleOperation = SimpleOperation()
+
+        XCTAssertNil(operation.completion)
+    }
+}
+
+// SimpleOperation: finishWithResult()
 extension SimpleOperationTests {
     func test_finish_with_result_should_finish_operation() {
         let operation: SimpleOperation = SimpleOperation()
@@ -77,7 +86,7 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation specific behavior: reject with error
+// SimpleOperation: rejectWithError()
 extension SimpleOperationTests {
     func test_reject_with_error_should_finish_operation() {
         let operation: SimpleOperation = SimpleOperation()
@@ -106,7 +115,7 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation specific behavior: cancellation
+// SimpleOperation: cancel()
 extension SimpleOperationTests {
     func test_cancel_then_reject_with_error_should_finish_operation_with_cancelled_state() {
         let operation: SimpleOperation = SimpleOperation()
@@ -126,5 +135,22 @@ extension SimpleOperationTests {
         } else {
             XCTAssert(false)
         }
+    }
+}
+
+// SimpleOperation: @completion
+extension SimpleOperationTests {
+    func test_completion_should_be_invoked_as_last_step_of_finishWithResult() {
+        let operation: SimpleOperation = SimpleOperation()
+
+        var expectedResult: OperationResult? = nil
+
+        operation.completion = { (result) in
+            expectedResult = result
+        }
+
+        operation.start()
+
+        XCTAssertNotNil(expectedResult)
     }
 }

@@ -15,6 +15,8 @@ enum OperationState {
 }
 
 class SimpleOperation: NSOperation, Operation {
+    var completion: ((OperationResult) -> Void)?
+
     private var state: OperationState = .Ready
 
     final override var executing: Bool {
@@ -57,10 +59,18 @@ class SimpleOperation: NSOperation, Operation {
     }
 
     final func finishWithResult(result: AnyObject) {
+        let operationResult: OperationResult
+
         if cancelled == false {
-            state = .Finished(.Result(result))
+            operationResult = .Result(result)
+            state = .Finished(operationResult)
         } else {
-            state = .Finished(.Cancelled)
+            operationResult = .Cancelled
+            state = .Finished(operationResult)
+        }
+
+        if let completion = completion {
+            completion(operationResult)
         }
     }
 
