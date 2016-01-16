@@ -9,16 +9,26 @@
 import Foundation
 @testable import CompositeOperations
 
+// MARK: - Operations
+
 class TestOperation_NeverFinishes: SimpleOperation {
     override func main() {
     }
 }
 
-class TestOperation_FinishesWithNSNull: SimpleOperation {
+class TestOperation_FinishesWithResult_NSNull: SimpleOperation {
     override func main() {
         finish(.Result(NSNull()))
     }
 }
+
+class TestOperation_FinishesWithError_NSNull: SimpleOperation {
+    override func main() {
+        finish(.Error(NSNull()))
+    }
+}
+
+// MARK: - Sequences
 
 class TestSequence_Null: Sequence {
     func nextOperation(previousOperation: Operation?) -> Operation? {
@@ -32,7 +42,7 @@ class TestSequence_OneOperationFinishingWithNull: Sequence {
             return nil
         }
 
-        return TestOperation_FinishesWithNSNull()
+        return TestOperation_FinishesWithResult_NSNull()
     }
 }
 
@@ -41,7 +51,7 @@ class TestSequence_ThreeOperationsFinishingWithNull: Sequence {
 
     func nextOperation(previousOperation: Operation?) -> Operation? {
         if index++ < 3 {
-            return TestOperation_FinishesWithNSNull()
+            return TestOperation_FinishesWithResult_NSNull()
         }
 
         return nil

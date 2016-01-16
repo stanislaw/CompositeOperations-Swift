@@ -8,12 +8,6 @@
 
 import Foundation
 
-enum CompositeOperationResult {
-    case Results([OperationResult])
-    case Errors([OperationResult?])
-    case Cancelled
-}
-
 class SequentialOperation : AbstractOperation {
     var completion: ((CompositeOperationResult) -> Void)?
     var operations: [Operation] = [Operation]()

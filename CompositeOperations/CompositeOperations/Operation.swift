@@ -18,5 +18,7 @@ protocol Operation {
     var result: OperationResult? { get }
 
     var completionBlock: (() -> Void)? { get set }
+
     func start()
+    func cancel()
 }

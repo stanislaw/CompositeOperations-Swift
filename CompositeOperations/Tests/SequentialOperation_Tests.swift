@@ -9,7 +9,7 @@
 import XCTest
 @testable import CompositeOperations
 
-class Unit_SequentialOperation_InitialState: XCTestCase {
+class SequentialOperation_InitialState_Test: XCTestCase {
     let sequentialOperation = SequentialOperation(sequence: TestSequence_Null())
 
     func test_should_be_ready() {
@@ -25,7 +25,7 @@ class Unit_SequentialOperation_InitialState: XCTestCase {
     }
 }
 
-class Unit_SequentialOperation_NullSequence: XCTestCase {
+class SequentialOperation_NullSequence_Test: XCTestCase {
     let sequentialOperation = SequentialOperation(sequence: TestSequence_Null())
 
     func test_should_finish() {
@@ -35,7 +35,7 @@ class Unit_SequentialOperation_NullSequence: XCTestCase {
     }
 }
 
-class Unit_SequentialOperation_Sequence_OneOperation: XCTestCase {
+class SequentialOperation_Sequence_OneOperation_Test: XCTestCase {
     var sequentialOperation: SequentialOperation!
 
     override func setUp() {
@@ -84,7 +84,7 @@ class Unit_SequentialOperation_Sequence_OneOperation: XCTestCase {
     }
 }
 
-class Unit_SequentialOperation_Sequence_ManyOperations: XCTestCase {
+class SequentialOperation_Sequence_ManyOperations_Test: XCTestCase {
     var sequentialOperation: SequentialOperation!
 
     override func setUp() {

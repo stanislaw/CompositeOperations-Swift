@@ -39,7 +39,7 @@ class SimpleOperation_NSOperation_Behavior_Tests: XCTestCase {
     }
 
     func test_NSOperation_should_invoke_completionBlock() {
-        let operation: TestOperation_FinishesWithNSNull = TestOperation_FinishesWithNSNull()
+        let operation: TestOperation_FinishesWithResult_NSNull = TestOperation_FinishesWithResult_NSNull()
 
         var flag = false
         waitForCompletion { (completion) -> Void in
