@@ -11,6 +11,7 @@ import Foundation
 enum OperationResult {
     case Result(AnyObject)
     case Error(AnyObject)
+    case Cancelled
 }
 
 protocol Operation {

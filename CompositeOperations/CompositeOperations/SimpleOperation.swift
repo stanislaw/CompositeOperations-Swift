@@ -17,6 +17,15 @@ enum OperationState {
 class SimpleOperation: NSOperation, Operation {
     private var state: OperationState = .Ready
 
+    final override var executing: Bool {
+        switch state {
+            case .Executing:
+                return true
+            default:
+                return false
+            }
+    }
+
     final override var finished: Bool {
         switch state {
             case .Finished(_):
@@ -36,14 +45,34 @@ class SimpleOperation: NSOperation, Operation {
     }
 
     final override func start() {
-        finishWithResult(NSNull())
+        if ready {
+            state = .Executing;
+
+            if cancelled {
+                state = .Finished(.Cancelled)
+            } else {
+                self.main()
+            }
+        }
     }
 
     final func finishWithResult(result: AnyObject) {
-        state = .Finished(.Result(result))
+        if cancelled == false {
+            state = .Finished(.Result(result))
+        } else {
+            state = .Finished(.Cancelled)
+        }
     }
 
     final func rejectWithError(error: AnyObject) {
-        state = .Finished(.Error(error))
+        if cancelled == false {
+            state = .Finished(.Error(error))
+        } else {
+            state = .Finished(.Cancelled)
+        }
+    }
+
+    override func main() {
+        finishWithResult(NSNull())
     }
 }

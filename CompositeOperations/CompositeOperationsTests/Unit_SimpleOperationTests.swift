@@ -9,6 +9,11 @@
 import XCTest
 @testable import CompositeOperations
 
+class TestOperation_NeverFinishes: SimpleOperation {
+    override func main() {
+    }
+}
+
 class SimpleOperationTests: XCTestCase {
 }
 
@@ -18,6 +23,20 @@ extension SimpleOperationTests {
         let operation: SimpleOperation = SimpleOperation()
 
         XCTAssert(operation.ready)
+    }
+
+    func test_NSOperation_should_not_be_executing() {
+        let operation: SimpleOperation = SimpleOperation()
+
+        XCTAssertFalse(operation.executing)
+    }
+
+    func test_NSOperation_should_be_executing_after_start() {
+        let operation: TestOperation_NeverFinishes = TestOperation_NeverFinishes()
+
+        operation.start()
+
+        XCTAssertTrue(operation.executing)
     }
 
     func test_NSOperation_should_be_finished_if_called_start() {
@@ -49,9 +68,9 @@ extension SimpleOperationTests {
                 case .Result(let result):
                     XCTAssert(result as! NSObject == NSNull())
 
-                case .Error:
+                default:
                     XCTAssert(false)
-                }
+            }
         } else {
             XCTAssert(false)
         }
@@ -75,12 +94,35 @@ extension SimpleOperationTests {
 
         if let result = operation.result {
             switch result {
-                case .Result(_):
-                    XCTAssert(false)
-
                 case .Error(let error):
                     XCTAssert(error as! NSObject == NSNull())
-                }
+
+                default:
+                    XCTAssert(false)
+            }
+        } else {
+            XCTAssert(false)
+        }
+    }
+}
+
+// SimpleOperation specific behavior: cancellation
+extension SimpleOperationTests {
+    func test_cancel_then_reject_with_error_should_finish_operation_with_cancelled_state() {
+        let operation: SimpleOperation = SimpleOperation()
+
+        operation.cancel()
+
+        operation.rejectWithError(NSNull())
+
+        if let result = operation.result {
+            switch result {
+            case .Cancelled:
+                XCTAssert(true)
+
+            default:
+                XCTAssert(false)
+            }
         } else {
             XCTAssert(false)
         }
