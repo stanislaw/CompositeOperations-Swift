@@ -9,16 +9,7 @@
 import XCTest
 @testable import CompositeOperations
 
-class TestOperation_NeverFinishes: SimpleOperation {
-    override func main() {
-    }
-}
-
-class SimpleOperationTests: XCTestCase {
-}
-
-// NSOperation's behavior
-extension SimpleOperationTests {
+class SimpleOperation_NSOperation_Behavior_Tests: XCTestCase {
     func test_NSOperation_should_be_ready() {
         let operation: SimpleOperation = SimpleOperation()
 
@@ -46,10 +37,26 @@ extension SimpleOperationTests {
 
         XCTAssert(operation.finished)
     }
+
+    func test_NSOperation_should_invoke_completionBlock() {
+        let operation: TestOperation_FinishesWithNSNull = TestOperation_FinishesWithNSNull()
+
+        var flag = false
+        waitForCompletion { (completion) -> Void in
+            operation.completionBlock = { () in
+                flag = true
+
+                completion()
+            }
+
+            operation.start()
+        }
+
+        XCTAssertTrue(flag)
+    }
 }
 
-// SimpleOperation: initial state
-extension SimpleOperationTests {
+class SimpleOperation_Initial_State_Tests: XCTestCase {
     func test_completion_should_be_nil() {
         let operation: SimpleOperation = SimpleOperation()
 
@@ -57,8 +64,7 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation: finish(.Result())
-extension SimpleOperationTests {
+class SimpleOperation_Finish_with_Result_Tests: XCTestCase {
     func test_finish_with_result_should_finish_operation() {
         let operation: SimpleOperation = SimpleOperation()
 
@@ -86,8 +92,7 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation: finish(.Error(NSNull()))
-extension SimpleOperationTests {
+class SimpleOperation_Finish_with_Error_Tests: XCTestCase {
     func test_reject_with_error_should_finish_operation() {
         let operation: SimpleOperation = SimpleOperation()
 
@@ -115,8 +120,7 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation: cancel()
-extension SimpleOperationTests {
+class SimpleOperation_Cancellation_Tests: XCTestCase {
     func test_cancel_then_reject_with_error_should_finish_operation_with_cancelled_state() {
         let operation: SimpleOperation = SimpleOperation()
 
@@ -138,8 +142,7 @@ extension SimpleOperationTests {
     }
 }
 
-// SimpleOperation: @completion
-extension SimpleOperationTests {
+class SimpleOperation_Completion_Tests: XCTestCase {
     func test_completion_should_be_invoked_as_last_step_of_finishWithResult() {
         let operation: SimpleOperation = SimpleOperation()
 

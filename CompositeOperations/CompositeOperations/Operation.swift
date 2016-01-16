@@ -9,11 +9,14 @@
 import Foundation
 
 enum OperationResult {
-    case Result(AnyObject)
-    case Error(AnyObject)
+    case Result(Any)
+    case Error(Any)
     case Cancelled
 }
 
 protocol Operation {
     var result: OperationResult? { get }
+
+    var completionBlock: (() -> Void)? { get set }
+    func start()
 }

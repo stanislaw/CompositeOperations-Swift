@@ -8,55 +8,8 @@
 
 import Foundation
 
-enum OperationState {
-    case Ready
-    case Executing
-    case Finished(OperationResult)
-}
-
-class SimpleOperation: NSOperation, Operation {
+class SimpleOperation: AbstractOperation {
     var completion: ((OperationResult) -> Void)?
-
-    private var state: OperationState = .Ready
-
-    final override var executing: Bool {
-        switch state {
-            case .Executing:
-                return true
-            default:
-                return false
-            }
-    }
-
-    final override var finished: Bool {
-        switch state {
-            case .Finished(_):
-                return true
-            default:
-                return false
-        }
-    }
-
-    final var result: OperationResult? {
-        switch state {
-            case .Finished(let result):
-                return result
-            default:
-                return nil
-        }
-    }
-
-    final override func start() {
-        if ready {
-            state = .Executing;
-
-            if cancelled {
-                state = .Finished(.Cancelled)
-            } else {
-                self.main()
-            }
-        }
-    }
 
     final func finish(result: OperationResult) {
         if cancelled == false {
