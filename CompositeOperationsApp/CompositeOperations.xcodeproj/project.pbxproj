@@ -22,6 +22,7 @@
 		86ECB8F51C4BBF9E000D2531 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86ECB8EC1C4BBF9E000D2531 /* Sequence.swift */; };
 		86ECB8F61C4BBF9E000D2531 /* SequentialOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86ECB8ED1C4BBF9E000D2531 /* SequentialOperation.swift */; };
 		86ECB8F71C4BBF9E000D2531 /* SimpleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86ECB8EE1C4BBF9E000D2531 /* SimpleOperation.swift */; };
+		86ECB8F91C4BC28E000D2531 /* Unit_CompositeOperation_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86ECB8F81C4BC28E000D2531 /* Unit_CompositeOperation_Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		86ECB8EC1C4BBF9E000D2531 /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		86ECB8ED1C4BBF9E000D2531 /* SequentialOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequentialOperation.swift; sourceTree = "<group>"; };
 		86ECB8EE1C4BBF9E000D2531 /* SimpleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperation.swift; sourceTree = "<group>"; };
+		86ECB8F81C4BC28E000D2531 /* Unit_CompositeOperation_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unit_CompositeOperation_Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				86D719561C4BAC0B0058C1E7 /* Unit_ParallelOperation_Tests.swift */,
 				86D719571C4BAC0B0058C1E7 /* Unit_SequentialOperation_Tests.swift */,
 				86D719581C4BAC0B0058C1E7 /* Unit_SimpleOperation_Tests.swift */,
+				86ECB8F81C4BC28E000D2531 /* Unit_CompositeOperation_Tests.swift */,
 			);
 			name = Tests;
 			path = ../Tests;
@@ -264,6 +267,7 @@
 				86D719601C4BAC300058C1E7 /* Unit_SimpleOperation_Tests.swift in Sources */,
 				86C5D2D31C4BAC6600C2305D /* TestOperations.swift in Sources */,
 				86D7195F1C4BAC300058C1E7 /* Unit_SequentialOperation_Tests.swift in Sources */,
+				86ECB8F91C4BC28E000D2531 /* Unit_CompositeOperation_Tests.swift in Sources */,
 				86D7195E1C4BAC300058C1E7 /* Unit_ParallelOperation_Tests.swift in Sources */,
 				86C5D2D21C4BAC6600C2305D /* TestHelpers.swift in Sources */,
 			);

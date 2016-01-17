@@ -8,8 +8,7 @@
 
 import Foundation
 
-class SequentialOperation : AbstractOperation {
-    var completion: ((CompositeOperationResult) -> Void)?
+class SequentialOperation : CompositeOperation {
     var operations: [Operation] = [Operation]()
 
     let sequence: Sequence

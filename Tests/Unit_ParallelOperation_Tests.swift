@@ -26,41 +26,45 @@ class ParallelOperation_InitialState_Tests: XCTestCase {
 }
 
 class ParallelOperation_ManyOperations_SuccessCase_Tests: XCTestCase {
-    let operations = [
-        TestOperation_FinishesWithResult_NSNull(),
-        TestOperation_FinishesWithResult_NSNull(),
-        TestOperation_FinishesWithResult_NSNull()
-    ]
-
-    var parallelOperation: ParallelOperation!
-
-    override func setUp() {
-        parallelOperation = ParallelOperation(operations)
-    }
-
     func test_should_finish_when_started() {
+        let operations = [
+            TestOperation_FinishesWithResult_NSNull(),
+            TestOperation_FinishesWithResult_NSNull(),
+            TestOperation_FinishesWithResult_NSNull()
+        ]
+
+        let parallelOperation = ParallelOperation(operations)
+
         waitForCompletion({ (done) -> Void in
-            self.parallelOperation.completion = { (result) in
+            parallelOperation.completion = { (result) in
                 done()
             }
 
-            self.parallelOperation.start()
+            parallelOperation.start()
         })
 
         XCTAssertTrue(parallelOperation.finished)
     }
 
     func test_completion_should_have_array_with_NSNull() {
+        let operations = [
+            TestOperation_FinishesWithResult_NSNull(),
+            TestOperation_FinishesWithResult_NSNull(),
+            TestOperation_FinishesWithResult_NSNull()
+        ]
+
+        let parallelOperation = ParallelOperation(operations)
+
         var expectedResult: CompositeOperationResult? = nil
 
         waitForCompletion({ (done) -> Void in
-            self.parallelOperation.completion = { (result) in
+            parallelOperation.completion = { (result) in
                 expectedResult = result
 
                 done()
             }
 
-            self.parallelOperation.start()
+            parallelOperation.start()
         })
 
         switch expectedResult! {
@@ -84,9 +88,7 @@ class ParallelOperation_ManyOperations_SuccessCase_Tests: XCTestCase {
 }
 
 class ParallelOperation_ManyOperations_FailureCase_Tests: XCTestCase {
-    var parallelOperation: ParallelOperation!
-
-    override func setUp() {
+    func test_should_finish_when_started() {
         let operations = [
             TestOperation_FinishesWithError_NSNull(),
             TestOperation_FinishesWithError_NSNull(),
@@ -96,32 +98,41 @@ class ParallelOperation_ManyOperations_FailureCase_Tests: XCTestCase {
         let operationQueue = NSOperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
 
-        parallelOperation = ParallelOperation(operations, operationQueue: operationQueue)
-    }
+        let parallelOperation = ParallelOperation(operations, operationQueue: operationQueue)
 
-    func test_should_finish_when_started() {
         waitForCompletion({ (done) -> Void in
-            self.parallelOperation.completion = { (result) in
+            parallelOperation.completion = { (result) in
                 done()
             }
 
-            self.parallelOperation.start()
+            parallelOperation.start()
         })
 
         XCTAssertTrue(parallelOperation.finished)
     }
 
     func test_completion_should_have_array_with_NSNull() {
+        let operations = [
+            TestOperation_FinishesWithError_NSNull(),
+            TestOperation_FinishesWithError_NSNull(),
+            TestOperation_FinishesWithError_NSNull()
+        ]
+
+        let operationQueue = NSOperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
+
+        let parallelOperation = ParallelOperation(operations, operationQueue: operationQueue)
+
         var expectedResult: CompositeOperationResult? = nil
 
         waitForCompletion({ (done) -> Void in
-            self.parallelOperation.completion = { (result) in
+            parallelOperation.completion = { (result) in
                 expectedResult = result
 
                 done()
             }
 
-            self.parallelOperation.start()
+            parallelOperation.start()
         })
 
         switch expectedResult! {

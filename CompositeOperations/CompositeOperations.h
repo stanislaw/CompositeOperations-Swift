@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double CompositeOperationsVersionNumber;
 FOUNDATION_EXPORT const unsigned char CompositeOperationsVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <CompositeOperations/PublicHeader.h>
-
-

@@ -36,35 +36,33 @@ class SequentialOperation_NullSequence_Test: XCTestCase {
 }
 
 class SequentialOperation_Sequence_OneOperation_Test: XCTestCase {
-    var sequentialOperation: SequentialOperation!
-
-    override func setUp() {
-        sequentialOperation = SequentialOperation(sequence: TestSequence_OneOperationFinishingWithNull())
-    }
-
     func test_should_finish() {
+        let sequentialOperation = SequentialOperation(sequence: TestSequence_OneOperationFinishingWithNull())
+
         waitForCompletion({ (done) -> Void in
-            self.sequentialOperation.completion = { (result) in
+            sequentialOperation.completion = { (result) in
                 done()
             }
 
-            self.sequentialOperation.start()
+            sequentialOperation.start()
         })
 
         XCTAssertTrue(sequentialOperation.finished)
     }
 
     func test_completion_should_have_array_with_NSNull() {
+        let sequentialOperation = SequentialOperation(sequence: TestSequence_OneOperationFinishingWithNull())
+
         var expectedResult: CompositeOperationResult? = nil
 
         waitForCompletion({ (done) -> Void in
-            self.sequentialOperation.completion = { (result) in
+            sequentialOperation.completion = { (result) in
                 expectedResult = result
 
                 done()
             }
 
-            self.sequentialOperation.start()
+            sequentialOperation.start()
         })
 
         switch expectedResult! {
@@ -85,35 +83,33 @@ class SequentialOperation_Sequence_OneOperation_Test: XCTestCase {
 }
 
 class SequentialOperation_Sequence_ManyOperations_Success_Test: XCTestCase {
-    var sequentialOperation: SequentialOperation!
-
-    override func setUp() {
-        sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperationsFinishingWithNull())
-    }
-
     func test_should_finish() {
+        let sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperationsFinishingWithNull())
+
         waitForCompletion({ (done) -> Void in
-            self.sequentialOperation.completion = { (result) in
+            sequentialOperation.completion = { (result) in
                 done()
             }
 
-            self.sequentialOperation.start()
+            sequentialOperation.start()
         })
 
         XCTAssertTrue(sequentialOperation.finished)
     }
 
     func test_completion_should_have_array_with_NSNull() {
+        let sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperationsFinishingWithNull())
+
         var expectedResult: CompositeOperationResult? = nil
 
         waitForCompletion({ (done) -> Void in
-            self.sequentialOperation.completion = { (result) in
+            sequentialOperation.completion = { (result) in
                 expectedResult = result
 
                 done()
             }
 
-            self.sequentialOperation.start()
+            sequentialOperation.start()
         })
 
         switch expectedResult! {
@@ -136,35 +132,33 @@ class SequentialOperation_Sequence_ManyOperations_Success_Test: XCTestCase {
 }
 
 class SequentialOperation_Sequence_ThirdOperationFinishesWithFailure_Test: XCTestCase {
-    var sequentialOperation: SequentialOperation!
-
-    override func setUp() {
-        sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperations_ThirdFinishesWithError_Null())
-    }
-
     func test_should_finish() {
+        let sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperations_ThirdFinishesWithError_Null())
+
         waitForCompletion({ (done) -> Void in
-            self.sequentialOperation.completion = { (result) in
+            sequentialOperation.completion = { (result) in
                 done()
             }
 
-            self.sequentialOperation.start()
+            sequentialOperation.start()
         })
 
         XCTAssertTrue(sequentialOperation.finished)
     }
 
     func test_completion_should_have_array_with_NSNull() {
+        let sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperations_ThirdFinishesWithError_Null())
+
         var expectedResult: CompositeOperationResult? = nil
 
         waitForCompletion({ (done) -> Void in
-            self.sequentialOperation.completion = { (result) in
+            sequentialOperation.completion = { (result) in
                 expectedResult = result
 
                 done()
             }
 
-            self.sequentialOperation.start()
+            sequentialOperation.start()
         })
 
         switch expectedResult! {

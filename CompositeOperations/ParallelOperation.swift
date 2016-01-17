@@ -8,24 +8,21 @@
 
 import Foundation
 
-class ParallelOperation : AbstractOperation {
-    var completion: ((CompositeOperationResult) -> Void)?
-
+class ParallelOperation : CompositeOperation {
     let operations: [AbstractOperation]
     let operationQueue: NSOperationQueue
 
-    init(_ operations: [AbstractOperation], operationQueue: NSOperationQueue) {
-        self.operations = operations
-        self.operationQueue = operationQueue
-    }
-
-    init(_ operations: [AbstractOperation]) {
+    init(_ operations: [AbstractOperation], operationQueue: NSOperationQueue? = nil) {
         self.operations = operations
 
-        let operationQueue = NSOperationQueue()
-        operationQueue.maxConcurrentOperationCount = 4
+        if let operationQueue = operationQueue {
+            self.operationQueue = operationQueue
+        } else {
+            let operationQueue = NSOperationQueue()
+            operationQueue.maxConcurrentOperationCount = 4
 
-        self.operationQueue = operationQueue
+            self.operationQueue = operationQueue
+        }
     }
 
     func cancelAllOperations() {

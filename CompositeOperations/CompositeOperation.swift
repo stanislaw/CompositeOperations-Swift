@@ -15,5 +15,13 @@ enum CompositeOperationResult {
 }
 
 class CompositeOperation: AbstractOperation {
+    var completion: ((CompositeOperationResult) -> Void)?
 
+    class func sequential(sequence: Sequence) -> CompositeOperation {
+        return SequentialOperation(sequence: sequence)
+    }
+
+    class func parallel(operations: [AbstractOperation], operationQueue: NSOperationQueue? = nil) -> CompositeOperation {
+        return ParallelOperation(operations, operationQueue: operationQueue)
+    }
 }
