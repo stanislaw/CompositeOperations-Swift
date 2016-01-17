@@ -84,16 +84,19 @@ class ParallelOperation_ManyOperations_SuccessCase_Tests: XCTestCase {
 }
 
 class ParallelOperation_ManyOperations_FailureCase_Tests: XCTestCase {
-    let operations = [
-        TestOperation_FinishesWithError_NSNull(),
-        TestOperation_FinishesWithError_NSNull(),
-        TestOperation_FinishesWithError_NSNull()
-    ]
-
     var parallelOperation: ParallelOperation!
 
     override func setUp() {
-        parallelOperation = ParallelOperation(operations)
+        let operations = [
+            TestOperation_FinishesWithError_NSNull(),
+            TestOperation_FinishesWithError_NSNull(),
+            TestOperation_FinishesWithError_NSNull()
+        ]
+
+        let operationQueue = NSOperationQueue()
+        operationQueue.maxConcurrentOperationCount = 1
+
+        parallelOperation = ParallelOperation(operations, operationQueue: operationQueue)
     }
 
     func test_should_finish_when_started() {
@@ -124,13 +127,25 @@ class ParallelOperation_ManyOperations_FailureCase_Tests: XCTestCase {
         switch expectedResult! {
         case .Errors(let errors):
             XCTAssertEqual(errors.count, 3)
+            let firstError = errors.first!
 
-            for error in errors {
+            switch firstError! {
+                case .Error(let error):
+                    XCTAssert(error as! NSNull == NSNull())
+                default:
+                    XCTFail()
+                }
+
+            for var i = 1; i < 3; i++ {
+                let error = errors[i]
+
                 switch error! {
+                    case .Cancelled:
+                        XCTAssertTrue(true)
+
                     case .Error(let error):
                         XCTAssert(error as! NSNull == NSNull())
-                    case .Result(_):
-                        XCTFail()
+
                     default:
                         XCTFail()
                     }

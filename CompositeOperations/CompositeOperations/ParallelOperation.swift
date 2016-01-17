@@ -14,6 +14,11 @@ class ParallelOperation : AbstractOperation {
     let operations: [AbstractOperation]
     let operationQueue: NSOperationQueue
 
+    init(_ operations: [AbstractOperation], operationQueue: NSOperationQueue) {
+        self.operations = operations
+        self.operationQueue = operationQueue
+    }
+
     init(_ operations: [AbstractOperation]) {
         self.operations = operations
 
@@ -73,10 +78,6 @@ class ParallelOperation : AbstractOperation {
 
             result = .Errors(errors)
             finish(result)
-        }
-
-        if let completion = completion {
-            completion(result)
         }
     }
 
