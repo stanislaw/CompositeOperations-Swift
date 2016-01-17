@@ -14,6 +14,32 @@ class AbstractOperation : NSOperation, Operation {
         case Executing
         case Finished(OperationResult)
 
+        func isValidTransition(to: OperationState) -> Bool {
+            switch self {
+                case .Ready:
+                    switch to {
+                        case .Executing:
+                            return true
+                        case .Finished(_):
+                            return true
+                        default:
+                            return false
+                    }
+
+                case .Executing:
+                    switch to {
+                        case .Finished(_):
+                            return true
+                        default:
+                            return false
+                    }
+
+
+                default:
+                    return false
+            }
+        }
+
         func toString() -> String {
             switch self {
                 case Ready:
@@ -33,6 +59,12 @@ class AbstractOperation : NSOperation, Operation {
         }
 
         set {
+            guard _state.isValidTransition(newValue) else {
+                print("Invalid transition from \(_state) to \(newValue)")
+
+                return
+            }
+
             let oldStateString = _state.toString()
             let newStateString = newValue.toString()
 
