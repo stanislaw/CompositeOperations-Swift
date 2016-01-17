@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol Sequence {
+public protocol Sequence {
     func nextOperation(previousOperation: Operation?) -> Operation?
 }

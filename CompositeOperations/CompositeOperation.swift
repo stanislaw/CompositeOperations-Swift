@@ -8,20 +8,20 @@
 
 import Foundation
 
-enum CompositeOperationResult {
+public enum CompositeOperationResult {
     case Results([OperationResult])
     case Errors([OperationResult?])
     case Cancelled
 }
 
-class CompositeOperation: AbstractOperation {
-    var completion: ((CompositeOperationResult) -> Void)?
+public class CompositeOperation: AbstractOperation {
+    public var completion: ((CompositeOperationResult) -> Void)?
 
-    class func sequential(sequence: Sequence) -> CompositeOperation {
+    public class func sequential(sequence: Sequence) -> CompositeOperation {
         return SequentialOperation(sequence: sequence)
     }
 
-    class func parallel(operations: [AbstractOperation], operationQueue: NSOperationQueue? = nil) -> CompositeOperation {
+    public class func parallel(operations: [AbstractOperation], operationQueue: NSOperationQueue? = nil) -> CompositeOperation {
         return ParallelOperation(operations, operationQueue: operationQueue)
     }
 }

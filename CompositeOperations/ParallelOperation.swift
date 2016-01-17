@@ -8,9 +8,9 @@
 
 import Foundation
 
-class ParallelOperation : CompositeOperation {
-    let operations: [AbstractOperation]
-    let operationQueue: NSOperationQueue
+internal class ParallelOperation : CompositeOperation {
+    private let operations: [AbstractOperation]
+    private let operationQueue: NSOperationQueue
 
     init(_ operations: [AbstractOperation], operationQueue: NSOperationQueue? = nil) {
         self.operations = operations
@@ -25,13 +25,13 @@ class ParallelOperation : CompositeOperation {
         }
     }
 
-    func cancelAllOperations() {
+    private final func cancelAllOperations() {
         for operation in operations {
             operation.cancel()
         }
     }
 
-    final func finish(result: CompositeOperationResult) {
+    private final func finish(result: CompositeOperationResult) {
         state = .Finished(.Result(result))
 
         if let completion = completion {
@@ -39,7 +39,7 @@ class ParallelOperation : CompositeOperation {
         }
     }
 
-    final func _finish() {
+    private final func _finish() {
         if self.cancelled {
             self.finish(.Cancelled)
             return
@@ -56,6 +56,7 @@ class ParallelOperation : CompositeOperation {
                         allOperationsSuccessful = false
                 }
             } else {
+                // TODO: throw here
                 abort()
             }
         }
@@ -78,7 +79,7 @@ class ParallelOperation : CompositeOperation {
         }
     }
 
-    override func main() {
+    final override func main() {
         let group = dispatch_group_create()
 
         for operation in operations {

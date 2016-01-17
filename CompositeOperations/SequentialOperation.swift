@@ -8,16 +8,16 @@
 
 import Foundation
 
-class SequentialOperation : CompositeOperation {
-    var operations: [Operation] = [Operation]()
+internal class SequentialOperation : CompositeOperation {
+    private var operations: [Operation] = [Operation]()
 
-    let sequence: Sequence
+    private let sequence: Sequence
 
     init(sequence: Sequence) {
         self.sequence = sequence
     }
 
-    func runNextOperation(lastFinishedOperationOrNil: Operation?) {
+    private func runNextOperation(lastFinishedOperationOrNil: Operation?) {
         if cancelled {
             finish(.Cancelled)
 
@@ -43,7 +43,7 @@ class SequentialOperation : CompositeOperation {
         }
     }
 
-    final func _finish() {
+    private func _finish() {
         if let lastOperation = operations.last {
             if let lastOperationResult = lastOperation.result {
                 switch lastOperationResult {
@@ -77,7 +77,7 @@ class SequentialOperation : CompositeOperation {
         finish(.Results(results))
     }
 
-    final func finish(result: CompositeOperationResult) {
+    private final func finish(result: CompositeOperationResult) {
         state = .Finished(.Result(result))
 
         if let completion = completion {

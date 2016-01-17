@@ -8,8 +8,8 @@
 
 import Foundation
 
-class AbstractOperation : NSOperation, Operation {
-    enum OperationState {
+public class AbstractOperation : NSOperation, Operation {
+    internal enum OperationState {
         case Ready
         case Executing
         case Finished(OperationResult)
@@ -52,14 +52,18 @@ class AbstractOperation : NSOperation, Operation {
         }
     }
 
-    var _state: OperationState = .Ready
-    var state: OperationState {
+    private var _state: OperationState = .Ready
+
+    // TODO: add lock to make @state thread-safe
+    internal var state: OperationState {
         get {
             return _state
         }
 
         set {
             guard _state.isValidTransition(newValue) else {
+                // TODO: throw here
+
                 print("Invalid transition from \(_state) to \(newValue)")
 
                 return
@@ -76,7 +80,7 @@ class AbstractOperation : NSOperation, Operation {
         }
     }
 
-    final override var ready: Bool {
+    final override public var ready: Bool {
         switch state {
         case .Ready:
             return true
@@ -85,7 +89,7 @@ class AbstractOperation : NSOperation, Operation {
         }
     }
 
-    final override var executing: Bool {
+    final override public var executing: Bool {
         switch state {
         case .Executing:
             return true
@@ -94,7 +98,7 @@ class AbstractOperation : NSOperation, Operation {
         }
     }
 
-    final override var finished: Bool {
+    final override public var finished: Bool {
         switch state {
         case .Finished(_):
             return true
@@ -103,7 +107,7 @@ class AbstractOperation : NSOperation, Operation {
         }
     }
 
-    final var result: OperationResult? {
+    final public var result: OperationResult? {
         switch state {
         case .Finished(let result):
             return result
@@ -112,7 +116,7 @@ class AbstractOperation : NSOperation, Operation {
         }
     }
 
-    final override func start() {
+    final override public func start() {
         if ready {
             state = .Executing;
 

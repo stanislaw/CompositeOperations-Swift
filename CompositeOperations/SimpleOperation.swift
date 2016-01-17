@@ -8,10 +8,10 @@
 
 import Foundation
 
-class SimpleOperation: AbstractOperation {
-    var completion: ((OperationResult) -> Void)?
+public class SimpleOperation: AbstractOperation {
+    public var completion: ((OperationResult) -> Void)?
 
-    final func finish(result: OperationResult) {
+    final public func finish(result: OperationResult) {
         if cancelled == false {
             state = .Finished(result)
         } else {
@@ -23,7 +23,7 @@ class SimpleOperation: AbstractOperation {
         }
     }
 
-    override func main() {
+    public override func main() {
         finish(.Result(NSNull()))
     }
 }

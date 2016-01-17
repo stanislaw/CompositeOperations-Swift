@@ -8,13 +8,13 @@
 
 import Foundation
 
-enum OperationResult {
+public enum OperationResult {
     case Result(Any)
     case Error(Any)
     case Cancelled
 }
 
-protocol Operation {
+public protocol Operation {
     var result: OperationResult? { get }
 
     var completionBlock: (() -> Void)? { get set }
