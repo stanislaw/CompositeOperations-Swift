@@ -75,3 +75,23 @@ class TestSequence_ThreeOperations_ThirdFinishesWithError_Null: Sequence {
         return nil
     }
 }
+
+// MARK: - Linear Sequences
+
+class TestLinearSequence_ThreeOperationsFinishingWithNull: LinearSequence {
+    override var steps: [(Operation?) -> Operation?] {
+        return [
+            { (_) in
+                return TestOperation_FinishesWithResult_NSNull()
+            },
+
+            { (_) in
+                return TestOperation_FinishesWithResult_NSNull()
+            },
+
+            { (_) in
+                return TestOperation_FinishesWithResult_NSNull()
+            }
+        ]
+    }
+}
