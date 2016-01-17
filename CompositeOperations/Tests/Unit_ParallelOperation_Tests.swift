@@ -129,6 +129,8 @@ class ParallelOperation_ManyOperations_FailureCase_Tests: XCTestCase {
                 switch error! {
                     case .Error(let error):
                         XCTAssert(error as! NSNull == NSNull())
+                    case .Result(_):
+                        XCTFail()
                     default:
                         XCTFail()
                     }

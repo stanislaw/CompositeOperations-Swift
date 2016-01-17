@@ -84,7 +84,7 @@ class SequentialOperation_Sequence_OneOperation_Test: XCTestCase {
     }
 }
 
-class SequentialOperation_Sequence_ManyOperations_Test: XCTestCase {
+class SequentialOperation_Sequence_ManyOperations_Success_Test: XCTestCase {
     var sequentialOperation: SequentialOperation!
 
     override func setUp() {
@@ -132,5 +132,60 @@ class SequentialOperation_Sequence_ManyOperations_Test: XCTestCase {
             default:
                 XCTFail()
             }
+    }
+}
+
+class SequentialOperation_Sequence_ThirdOperationFinishesWithFailure_Test: XCTestCase {
+    var sequentialOperation: SequentialOperation!
+
+    override func setUp() {
+        sequentialOperation = SequentialOperation(sequence: TestSequence_ThreeOperations_ThirdFinishesWithError_Null())
+    }
+
+    func test_should_finish() {
+        waitForCompletion({ (done) -> Void in
+            self.sequentialOperation.completion = { (result) in
+                done()
+            }
+
+            self.sequentialOperation.start()
+        })
+
+        XCTAssertTrue(sequentialOperation.finished)
+    }
+
+    func test_completion_should_have_array_with_NSNull() {
+        var expectedResult: CompositeOperationResult? = nil
+
+        waitForCompletion({ (done) -> Void in
+            self.sequentialOperation.completion = { (result) in
+                expectedResult = result
+
+                done()
+            }
+
+            self.sequentialOperation.start()
+        })
+
+        switch expectedResult! {
+        case .Errors(let errors):
+            XCTAssertEqual(errors.count, 3)
+
+            let firstError = errors.first!
+            XCTAssertNil(firstError)
+
+            let thirdError = errors.last!
+            switch thirdError! {
+                case .Error(let error):
+                    XCTAssert(error as! NSNull == NSNull())
+                default:
+                    XCTFail()
+            }
+
+        case .Results(_):
+            XCTFail()
+        default:
+            XCTFail()
+        }
     }
 }

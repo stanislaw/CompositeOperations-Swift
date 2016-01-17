@@ -100,7 +100,7 @@ class ParallelOperation : AbstractOperation {
             }
         }
 
-        dispatch_group_notify(group, dispatch_get_main_queue(), {
+        dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self._finish()
         })
 

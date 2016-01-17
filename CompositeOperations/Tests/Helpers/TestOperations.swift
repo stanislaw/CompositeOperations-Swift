@@ -57,3 +57,21 @@ class TestSequence_ThreeOperationsFinishingWithNull: Sequence {
         return nil
     }
 }
+
+class TestSequence_ThreeOperations_ThirdFinishesWithError_Null: Sequence {
+    var index = 0
+
+    func nextOperation(previousOperation: Operation?) -> Operation? {
+        if index < 2 {
+            index++;
+            return TestOperation_FinishesWithResult_NSNull()
+        }
+
+        if index == 2 {
+            index++;
+            return TestOperation_FinishesWithError_NSNull();
+        }
+
+        return nil
+    }
+}

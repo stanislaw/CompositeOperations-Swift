@@ -50,7 +50,16 @@ class SequentialOperation : AbstractOperation {
                 switch lastOperationResult {
                     case .Error(_):
                         let errors = operations.map({ (operation) -> OperationResult? in
-                            return operation.result
+                            if let result = operation.result {
+                                switch result {
+                                    case .Error(_):
+                                        return result
+                                    default:
+                                        break
+                                }
+                            }
+
+                            return nil
                         })
 
                         finish(.Errors(errors))
